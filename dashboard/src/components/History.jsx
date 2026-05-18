@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react'
 import { useApp } from '../context/AppContext'
 
 const History = () => {
-  const { history } = useApp();
+  const { history, deleteHistory } = useApp();
   const [searchTerm, setSearchTerm] = useState('');
 
   const filteredHistory = useMemo(() => {

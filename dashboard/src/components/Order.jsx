@@ -61,6 +61,9 @@ const OrderManagement = () => {
     
   };
 
+  // Filter out completed orders
+  const incomingOrders = orders.filter(order => order.status !== 'completed');
+
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -78,9 +81,9 @@ const OrderManagement = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Incoming Orders */}
         <div className="lg:col-span-2 bg-slate-800 rounded-xl p-6">
-          <h2 className="text-xl font-semibold mb-6">Incoming Orders ({orders.length})</h2>
+          <h2 className="text-xl font-semibold mb-6">Incoming Orders ({incomingOrders.length})</h2>
 
-          {orders.length === 0 ? (
+          {incomingOrders.length === 0 ? (
             <div className="text-center py-12 text-slate-400">
               <p>No incoming orders</p>
             </div>
@@ -99,7 +102,7 @@ const OrderManagement = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order) => {
+                  {incomingOrders.map((order) => {
                     const itemCount = order.items?.length || 0;
                     const total = calculateTotal(order.items);
                     const itemNames = getItemNames(order.items);
@@ -125,12 +128,22 @@ const OrderManagement = () => {
                             {order.status || 'pending'}
                           </span>
                         </td>
-                        <td className="py-4">
+                        <td className="py-4 flex gap-2">
                           <button
                             onClick={() => handleSelectOrder(order)}
                             className="text-blue-500 hover:text-blue-400 text-sm font-medium"
                           >
                             Select
+                          </button>
+                          <button
+                            onClick={async () => {
+                              if(window.confirm('Delete this order?')) {
+                                await deleteOrder(order.id);
+                              }
+                            }}
+                            className="text-red-500 hover:text-red-400 text-sm font-medium"
+                          >
+                            Delete
                           </button>
                         </td>
                       </tr>

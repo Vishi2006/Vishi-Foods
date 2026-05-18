@@ -134,6 +134,21 @@ export const AppProvider = ({ children }) => {
     setInventory(prev => prev.filter(item => item.id !== id));
   };
 
+  // Delete order from Firestore
+  const deleteOrder = async (orderId) => {
+    try {
+      await deleteDoc(doc(db, "orders", orderId));
+      setOrders(prev => prev.filter(order => order.id !== orderId));
+    } catch (error) {
+      console.error("Error deleting order:", error);
+    }
+  };
+
+  // Delete history entry
+  const deleteHistory = (orderId) => {
+    setHistory(prev => prev.filter(order => order.id !== orderId));
+  };
+
   const value = {
     orders,
     history,
@@ -142,7 +157,9 @@ export const AppProvider = ({ children }) => {
     removeOrder,
     addInventoryItem,
     updateInventoryItem,
-    deleteInventoryItem
+    deleteInventoryItem,
+    deleteOrder,
+    deleteHistory
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

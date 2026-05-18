@@ -49,25 +49,37 @@ const History = () => {
               </thead>
               <tbody>
                 {filteredHistory.map((order) => (
-                <tr key={order.id} className="border-b border-slate-700">
-                  <td className="py-4 text-slate-300">{order.id}</td>
-                  <td className="py-4 text-slate-300">{order.customer}</td>
+                  <tr key={order.id} className="border-b border-slate-700">
+                    <td className="py-4 text-slate-300">{order.id}</td>
+                    <td className="py-4 text-slate-300">{order.customer}</td>
                     <td className="py-4 text-slate-300">{Array.isArray(order.items) ? order.items.length : 0} items</td>
-                  <td className="py-4 text-slate-300">{order.date}</td>
-                  <td className="py-4">
-                    <span
-                      className={`px-3 py-1 rounded-full text-xs font-medium ${
-                        order.status === 'Delivered'
-                          ? 'bg-green-900 text-green-300'
-                          : 'bg-red-900 text-red-300'
-                      }`}
-                    >
-                      {order.status}
-                    </span>
-                  </td>
+                    <td className="py-4 text-slate-300">{order.date}</td>
+                    <td className="py-4">
+                      <span
+                        className={`px-3 py-1 rounded-full text-xs font-medium ${
+                          order.status === 'Delivered'
+                            ? 'bg-green-900 text-green-300'
+                            : 'bg-red-900 text-red-300'
+                        }`}
+                      >
+                        {order.status}
+                      </span>
+                    </td>
                     <td className="py-4">{order.deliveryamount} ₹</td>
-                </tr>
-              ))}
+                    <td className="py-4">
+                      <button
+                        className="text-red-500 hover:text-red-400 text-sm font-medium"
+                        onClick={() => {
+                          if(window.confirm('Delete this history entry?')) {
+                            deleteHistory(order.id);
+                          }
+                        }}
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
